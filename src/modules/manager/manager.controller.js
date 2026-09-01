@@ -1,4 +1,4 @@
-import ManagerModel from "../../../DB/models/manager.models.js";
+import ManagerModel from "../../../DB/models/manager.model.js";
 import { managerSchema } from "./manager.validation.js";
 
 export const getAll = async (req, res) => {
