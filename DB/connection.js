@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize('freedb_82Sq5qVo', 'u_L0JrfS', 'd9X9hwJ8a0eO', {
+const sequelize = new Sequelize('freedb_m827AF7c', 'u_nYmeTI', 'iGqwCYJC43gJ', {
     host: 'sql.freedb.tech',
       port: 3306,
     dialect: 'mysql'
