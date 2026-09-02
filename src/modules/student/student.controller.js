@@ -2,8 +2,8 @@ import StudentModel from "../../../DB/models/student.model.js";
 import { studentSchema } from "./student.validation.js";
 
 export const getAll = async (req, res) => {
-    const student = await StudentModel.findAll();
-    return res.status(200).json({ message: "success", student });
+    const students = await StudentModel.findAll();
+    return res.status(200).json({ message: "success", students });
 };
 
 export const getById = async (req, res) => {
