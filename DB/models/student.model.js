@@ -18,7 +18,12 @@ const StudentModel = sequelize.define("Student", {
     password: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    confirmEmail: {                          
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  }
 })
 
 export default StudentModel
