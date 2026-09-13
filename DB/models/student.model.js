@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../connection.js";
-
 const StudentModel = sequelize.define("Student", {
     firstName: {
         type: DataTypes.STRING,
@@ -19,11 +18,20 @@ const StudentModel = sequelize.define("Student", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    confirmEmail: {                          
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
-  }
+    status: {
+        type: DataTypes.ENUM("active", "not_active"),
+        allowNull: false,
+        defaultValue: "active"
+    },
+    confirmEmail: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
+    sendCode: {
+        type: DataTypes.STRING,
+        defaultValue: null
+    }
 })
 
 export default StudentModel

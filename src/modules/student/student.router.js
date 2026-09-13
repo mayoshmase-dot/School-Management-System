@@ -4,7 +4,6 @@ const router = Router()
 
 router.get('/',controller.getAll)
 router.get('/:id',controller.getById)
-router.post('/',controller.createStudent)
 router.put('/:id',controller.updateStudent)
 router.delete('/:id',controller.deleteStudent)
 
