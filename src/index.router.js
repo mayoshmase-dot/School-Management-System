@@ -6,13 +6,14 @@ import courseRouter from './modules/course/course.router.js'
 import semesterRouter from './modules/semester/semester.router.js';
 import courseOfferingRouter from './modules/courseOffering/courseOffering.router.js';
 import semesterRegistrationRouter from './modules/semesterRegistration/semesterRegistration.router.js';
+import enrolmentRouter from './modules/enrolment/enrolment.router.js';
 
 import cors from "cors";
 
 const initApp = (app, express) => {
     app.use(express.json())
     app.use(cors());
-    app.use('/auth',authRouter)
+    app.use('/auth', authRouter)
     app.use('/managers', managerRouter)
     app.use('/teachers', teacherRouter)
     app.use('/students', studentRouter)
@@ -20,6 +21,8 @@ const initApp = (app, express) => {
     app.use('/semesters', semesterRouter)
     app.use('/course-offerings', courseOfferingRouter);
     app.use('/semester-registration', semesterRegistrationRouter);
+    app.use('/enrolments', enrolmentRouter);
 }
+
 
 export default initApp
