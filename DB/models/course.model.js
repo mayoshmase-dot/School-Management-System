@@ -15,7 +15,6 @@ const CourseModel = sequelize.define("Course", {
     allowNull: false
   }
 });
-// علاقة ذاتية M:N — كل Course ممكن يكون له عدة Prerequisites
 CourseModel.belongsToMany(CourseModel, {
     through: "Course_Prerequisites",
     as: "prerequisites",

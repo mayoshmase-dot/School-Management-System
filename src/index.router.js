@@ -5,6 +5,7 @@ import studentRouter from './modules/student/student.router.js'
 import courseRouter from './modules/course/course.router.js'
 import semesterRouter from './modules/semester/semester.router.js';
 import courseOfferingRouter from './modules/courseOffering/courseOffering.router.js';
+import semesterRegistrationRouter from './modules/semesterRegistration/semesterRegistration.router.js';
 
 import cors from "cors";
 
@@ -17,8 +18,8 @@ const initApp = (app, express) => {
     app.use('/students', studentRouter)
     app.use('/courses', courseRouter)
     app.use('/semesters', semesterRouter)
-
     app.use('/course-offerings', courseOfferingRouter);
+    app.use('/semester-registration', semesterRegistrationRouter);
 }
 
 export default initApp
