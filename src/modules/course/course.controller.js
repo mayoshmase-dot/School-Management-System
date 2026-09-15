@@ -46,3 +46,54 @@ export const deleteCourse = async (req, res) => {
     await course.destroy();
     return res.status(200).json({ message: "Course deleted successfully" });
 };
+
+
+export const addPrerequisite = async (req, res) => {
+        const { courseId, prerequisiteId } = req.body;
+        const course = await CourseModel.findByPk(courseId);
+        const prerequisite = await CourseModel.findByPk(prerequisiteId);
+
+        if (!course || !prerequisite) {
+            return res.status(404).json({ message: "Course or Prerequisite not found" });
+        }
+
+        if (courseId == prerequisiteId) {
+            return res.status(400).json({ message: "A course cannot be its own prerequisite" });
+        }
+
+        await course.addPrerequisite(prerequisite);
+
+        return res.status(200).json({ message: "Prerequisite added successfully" });
+
+    };
+
+export const getCourseWithPrerequisites = async (req, res) => {
+        const { id } = req.params;
+
+        const course = await CourseModel.findByPk(id, {
+            include: [
+                { model: CourseModel, as: "prerequisites" },
+                { model: CourseModel, as: "requiredFor" }
+            ]
+        });
+
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+
+        return res.status(200).json({ message: "success", course });
+
+};
+export const removePrerequisite = async (req, res) => {
+        const { courseId, prerequisiteId } = req.body;
+
+        const course = await CourseModel.findByPk(courseId);
+        const prerequisite = await CourseModel.findByPk(prerequisiteId);
+
+        if (!course || !prerequisite) {
+            return res.status(404).json({ message: "Course or Prerequisite not found" });
+        }
+        await course.removePrerequisite(prerequisite);
+
+        return res.status(200).json({ message: "Prerequisite removed successfully" });
+};
