@@ -23,6 +23,4 @@ const initApp = (app, express) => {
     app.use('/semester-registration', semesterRegistrationRouter);
     app.use('/enrolments', enrolmentRouter);
 }
-
-
 export default initApp

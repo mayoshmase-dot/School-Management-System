@@ -1,99 +1,75 @@
 import CourseModel from "../../../DB/models/course.model.js";
-import { courseSchema } from "./course.validation.js";
+import { asyncHandler } from "../../utils/catchError.js";
+import { AppError } from "../../utils/appError.js";
 
-export const getAll = async (req, res) => {
+export const getAll = asyncHandler(async (req, res) => {
     const courses = await CourseModel.findAll();
     return res.status(200).json({ message: "success", courses });
-};
+});
 
-export const getById = async (req, res) => {
+export const getById = asyncHandler(async (req, res) => {
     const { id } = req.params;
-
     const course = await CourseModel.findByPk(id);
-    if (!course) {
-        return res.status(404).json({ message: "Course not found" });
-    }
+    if (!course) throw new AppError("Course not found", 404);
     return res.status(200).json({ message: "success", course });
-};
+});
 
-export const createCourse = async (req, res) => {
-    const { error } = courseSchema.validate(req.body);
-    if (error) {
-        return res.status(400).json({message: error.details[0].message});
-    }
-
+export const createCourse = asyncHandler(async (req, res) => {
     const course = await CourseModel.create(req.body);
     return res.status(201).json({ message: "success", course });
-};
+});
 
-export const updateCourse = async (req, res) => {
+export const updateCourse = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const course = await CourseModel.findByPk(id);
-    if (!course) {
-        return res.status(404).json({ message: "Course not found" });
-    }
+    if (!course) throw new AppError("Course not found", 404);
     await course.update(req.body);
     return res.status(200).json({ message: "success", course });
-};
+});
 
-export const deleteCourse = async (req, res) => {
+export const deleteCourse = asyncHandler(async (req, res) => {
     const { id } = req.params;
-
     const course = await CourseModel.findByPk(id);
-    if (!course) {
-        return res.status(404).json({ message: "Course not found" });
-    }
+    if (!course) throw new AppError("Course not found", 404);
     await course.destroy();
     return res.status(200).json({ message: "Course deleted successfully" });
-};
+});
 
+export const addPrerequisite = asyncHandler(async (req, res) => {
+    const { courseId, prerequisiteId } = req.body;
 
-export const addPrerequisite = async (req, res) => {
-        const { courseId, prerequisiteId } = req.body;
-        const course = await CourseModel.findByPk(courseId);
-        const prerequisite = await CourseModel.findByPk(prerequisiteId);
+    const course = await CourseModel.findByPk(courseId);
+    const prerequisite = await CourseModel.findByPk(prerequisiteId);
 
-        if (!course || !prerequisite) {
-            return res.status(404).json({ message: "Course or Prerequisite not found" });
-        }
+    if (!course || !prerequisite) throw new AppError("Course or Prerequisite not found", 404);
+    if (courseId == prerequisiteId) throw new AppError("A course cannot be its own prerequisite", 400);
 
-        if (courseId == prerequisiteId) {
-            return res.status(400).json({ message: "A course cannot be its own prerequisite" });
-        }
+    await course.addPrerequisite(prerequisite);
+    return res.status(200).json({ message: "Prerequisite added successfully" });
+});
 
-        await course.addPrerequisite(prerequisite);
+export const getCourseWithPrerequisites = asyncHandler(async (req, res) => {
+    const { id } = req.params;
 
-        return res.status(200).json({ message: "Prerequisite added successfully" });
+    const course = await CourseModel.findByPk(id, {
+        include: [
+            { model: CourseModel, as: "prerequisites" },
+            { model: CourseModel, as: "requiredFor" }
+        ]
+    });
 
-    };
+    if (!course) throw new AppError("Course not found", 404);
+    return res.status(200).json({ message: "success", course });
+});
 
-export const getCourseWithPrerequisites = async (req, res) => {
-        const { id } = req.params;
+export const removePrerequisite = asyncHandler(async (req, res) => {
+    const { courseId, prerequisiteId } = req.body;
 
-        const course = await CourseModel.findByPk(id, {
-            include: [
-                { model: CourseModel, as: "prerequisites" },
-                { model: CourseModel, as: "requiredFor" }
-            ]
-        });
+    const course = await CourseModel.findByPk(courseId);
+    const prerequisite = await CourseModel.findByPk(prerequisiteId);
 
-        if (!course) {
-            return res.status(404).json({ message: "Course not found" });
-        }
+    if (!course || !prerequisite) throw new AppError("Course or Prerequisite not found", 404);
 
-        return res.status(200).json({ message: "success", course });
-
-};
-export const removePrerequisite = async (req, res) => {
-        const { courseId, prerequisiteId } = req.body;
-
-        const course = await CourseModel.findByPk(courseId);
-        const prerequisite = await CourseModel.findByPk(prerequisiteId);
-
-        if (!course || !prerequisite) {
-            return res.status(404).json({ message: "Course or Prerequisite not found" });
-        }
-        await course.removePrerequisite(prerequisite);
-
-        return res.status(200).json({ message: "Prerequisite removed successfully" });
-};
+    await course.removePrerequisite(prerequisite);
+    return res.status(200).json({ message: "Prerequisite removed successfully" });
+});

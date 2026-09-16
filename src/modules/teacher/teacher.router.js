@@ -1,11 +1,14 @@
 import { Router } from "express";
 import * as controller from "./teacher.controller.js";
-const router = Router()
+import { validate } from "../../middlewares/validation.middleware.js";
+import { teacherSchema } from "./teacher.validation.js";
 
-router.get('/',controller.getAll)
-router.get('/:id',controller.getById)
-router.post('/',controller.createTeacher)
-router.put('/:id',controller.updateTeacher)
-router.delete('/:id',controller.deleteTeacher)
+const router = Router();
 
-export default router
+router.get('/', controller.getAll);
+router.get('/:id', controller.getById);
+router.post('/', validate(teacherSchema), controller.createTeacher);
+router.put('/:id', validate(teacherSchema), controller.updateTeacher);
+router.delete('/:id', controller.deleteTeacher);
+
+export default router;

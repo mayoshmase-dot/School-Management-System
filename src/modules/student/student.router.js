@@ -1,10 +1,14 @@
 import { Router } from "express";
 import * as controller from "./student.controller.js";
-const router = Router()
+import { validate } from "../../middlewares/validation.middleware.js";
+import { studentSchema } from "./student.validation.js";
+import { auth } from "../../middlewares/auth.middleware.js";
 
-router.get('/',controller.getAll)
-router.get('/:id',controller.getById)
-router.put('/:id',controller.updateStudent)
-router.delete('/:id',controller.deleteStudent)
+const router = Router();
 
-export default router
+router.get('/', controller.getAll);
+router.get('/:id', controller.getById);
+router.put('/', auth, validate(studentSchema), controller.updateStudent);
+router.delete('/', auth, controller.deleteStudent);
+
+export default router;

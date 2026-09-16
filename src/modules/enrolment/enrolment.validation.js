@@ -1,7 +1,6 @@
 import joi from 'joi';
 
 export const enrolmentSchema = joi.object({
-    studentId: joi.number().integer().required(),
     offeringId: joi.number().integer().required()
 });
 

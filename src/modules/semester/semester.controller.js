@@ -1,45 +1,36 @@
 import SemesterModel from "../../../DB/models/semester.model.js";
-import { semesterSchema } from "./semester.validation.js";
+import { asyncHandler } from "../../utils/catchError.js";
+import { AppError } from "../../utils/appError.js";
 
-export const getAll = async (req, res) => {
+export const getAll = asyncHandler(async (req, res) => {
     const semesters = await SemesterModel.findAll();
     return res.status(200).json({ message: "success", semesters });
-};
+});
 
-export const getById = async (req, res) => {
+export const getById = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const semester = await SemesterModel.findByPk(id);
-    if (!semester) {
-        return res.status(404).json({ message: "Semester not found" });
-    }
+    if (!semester) throw new AppError("Semester not found", 404);
     return res.status(200).json({ message: "success", semester });
-};
+});
 
-export const createSemester = async (req, res) => {
-    const { error } = semesterSchema.validate(req.body);
-    if (error) {
-        return res.status(400).json({ message: "error", error: error.details[0].message });
-    }
+export const createSemester = asyncHandler(async (req, res) => {
     const semester = await SemesterModel.create(req.body);
     return res.status(201).json({ message: "success", semester });
-};
+});
 
-export const updateSemester = async (req, res) => {
+export const updateSemester = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const semester = await SemesterModel.findByPk(id);
-    if (!semester) {
-        return res.status(404).json({ message: "Semester not found" });
-    }
+    if (!semester) throw new AppError("Semester not found", 404);
     await semester.update(req.body);
     return res.status(200).json({ message: "success", semester });
-};
+});
 
-export const deleteSemester = async (req, res) => {
+export const deleteSemester = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const semester = await SemesterModel.findByPk(id);
-    if (!semester) {
-        return res.status(404).json({ message: "Semester not found" });
-    }
+    if (!semester) throw new AppError("Semester not found", 404);
     await semester.destroy();
     return res.status(200).json({ message: "Semester deleted successfully" });
-};
+});

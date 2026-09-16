@@ -1,11 +1,14 @@
 import { Router } from "express";
 import * as controller from "./manager.controller.js";
-const router = Router()
+import { validate } from "../../middlewares/validation.middleware.js";
+import { managerSchema } from "./manager.validation.js";
 
-router.get('/',controller.getAll)
-router.get('/:id',controller.getById)
-router.post('/',controller.createManager)
-router.put('/:id',controller.updateManager)
-router.delete('/:id',controller.deleteManager)
+const router = Router();
 
-export default router
+router.get('/', controller.getAll);
+router.get('/:id', controller.getById);
+router.post('/', validate(managerSchema), controller.createManager);
+router.put('/:id', validate(managerSchema), controller.updateManager);
+router.delete('/:id', controller.deleteManager);
+
+export default router;
