@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../connection.js";
 
-const TeacherModel = sequelize.define("Teacher",{
-firstName: {
+const TeacherModel = sequelize.define("Teacher", {
+  firstName: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -14,6 +14,11 @@ firstName: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-  }})
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+})
 
-  export default TeacherModel
+export default TeacherModel

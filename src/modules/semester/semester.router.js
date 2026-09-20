@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as controller from "./semester.controller.js";
-import { validate } from "../../middlewares/validation.middleware.js";
+import { validate } from "../../middleware/validation.middleware.js";
 import { semesterSchema } from "./semester.validation.js";
 
 const router = Router();

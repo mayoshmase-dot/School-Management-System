@@ -15,7 +15,7 @@ export const getById = asyncHandler(async (req, res) => {
 });
 
 export const updateStudent = asyncHandler(async (req, res) => {
-    const student = req.student;   // ⚠️ الطالب نفسه من التوكن، مش أي id
+    const student = req.student;   
     await student.update(req.body);
     return res.status(200).json({ message: "success", student });
 });

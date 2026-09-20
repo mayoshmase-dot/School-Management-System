@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as controller from "./courseOffering.controller.js";
-import { validate } from "../../middlewares/validation.middleware.js";
+import { validate } from "../../middleware/validation.middleware.js";
 import { courseOfferingSchema } from "./courseOffering.validation.js";
 
 const router = Router();
