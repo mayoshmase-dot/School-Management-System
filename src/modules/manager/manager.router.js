@@ -8,7 +8,7 @@ const router = Router();
 
 router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
-router.post('/', auth("manager"), validate(managerSchema), controller.createManager);
+router.post('/',  validate(managerSchema), controller.createManager);
 router.post('/login', validate(managerLoginSchema), controller.loginManger);
 
 router.put('/:id', auth("manager"), validate(managerSchema), controller.updateManager);
