@@ -8,8 +8,8 @@ const router = Router();
 
 router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
-router.post('/',  validate(managerSchema), controller.createManager);
-router.post('/login', validate(managerLoginSchema), controller.loginManger);
+router.post('/', controller.createManager);
+router.post('/login', controller.loginManger);
 
 router.put('/:id', auth("manager"), validate(managerSchema), controller.updateManager);
 router.delete('/:id', auth("manager"), controller.deleteManager);
