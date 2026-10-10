@@ -6,8 +6,8 @@ import { auth } from "../../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.post('/', auth, validate(enrolmentSchema), controller.enrollStudent);
-router.put('/:id/grade', validate(gradeSchema), controller.giveGrade);
-router.get('/student/:id', controller.getStudentEnrolments);
+router.post('/', auth("student"), validate(enrolmentSchema), controller.enrollStudent);
+router.put('/:id/grade', auth("teacher"), validate(gradeSchema), controller.giveGrade);
+router.get('/student/:id', auth("student", "manager", "teacher"), controller.getStudentEnrolments);
 
 export default router;

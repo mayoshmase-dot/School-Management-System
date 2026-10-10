@@ -6,7 +6,7 @@ import { asyncHandler } from "../../utils/catchError.js";
 import { AppError } from "../../utils/appError.js";
 
 export const enrollStudent = asyncHandler(async (req, res) => {
-    const studentId = req.student.id;   
+    const studentId = req.user.id;   
     const { offeringId } = req.body;
 
     const offering = await CourseOfferingModel.findByPk(offeringId, {

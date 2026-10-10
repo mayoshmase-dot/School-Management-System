@@ -5,13 +5,13 @@ import { asyncHandler } from "../../utils/catchError.js";
 import { AppError } from "../../utils/appError.js";
 
 export const registerForSemester = asyncHandler(async (req, res) => {
-    const studentId = req.student.id;
+    const studentId = req.user.id;
     const { semesterId } = req.body;
 
     const semester = await SemesterModel.findByPk(semesterId);
     if (!semester) throw new AppError("Semester not found", 404);
 
-    await req.student.addSemester(semester);
+    await req.user.addSemester(semester);
     return res.status(200).json({ message: "Registered for semester successfully" });
 });
 
@@ -25,12 +25,12 @@ export const getStudentSemesters = asyncHandler(async (req, res) => {
 });
 
 export const unregisterFromSemester = asyncHandler(async (req, res) => {
-    const studentId = req.student.id;
+    const studentId = req.user.id;
     const { semesterId } = req.body;
 
     const semester = await SemesterModel.findByPk(semesterId);
     if (!semester) throw new AppError("Semester not found", 404);
 
-    await req.student.removeSemester(semester);
+    await req.user.removeSemester(semester);
     return res.status(200).json({ message: "Unregistered from semester successfully" });
 });

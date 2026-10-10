@@ -21,4 +21,10 @@ const TeacherModel = sequelize.define("Teacher", {
   }
 })
 
+TeacherModel.prototype.toJSON = function () {
+    const values = Object.assign({}, this.get());
+    delete values.password;
+    return values;
+};
+
 export default TeacherModel

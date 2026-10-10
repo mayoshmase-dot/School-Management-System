@@ -8,7 +8,7 @@ const router = Router();
 
 router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
-router.put('/', auth, validate(studentSchema), controller.updateStudent);
-router.delete('/', auth, controller.deleteStudent);
+router.put('/', auth("student"), validate(studentSchema), controller.updateStudent);
+router.delete('/', auth("student"), controller.deleteStudent);
 
 export default router;
